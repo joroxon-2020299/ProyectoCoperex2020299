@@ -30,20 +30,20 @@ api.put(
 )
 
 // Ruta para actualizar la contraseña del administrador
-api.patch(
+api.put(
     '/:id/password', 
     updateAdminPassword
 )
 
 // Ruta para actualizar la imagen de perfil del administrador
-api.patch(
+api.put(
     '/:id/image', 
     multerUploads, 
     updateAdminImage
 )
 
 // Ruta para activar/desactivar un administrador
-api.patch(
+api.put(
     '/:id/status', 
     toggleAdminStatus
 )

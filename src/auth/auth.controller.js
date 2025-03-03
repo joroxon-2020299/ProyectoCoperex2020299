@@ -3,6 +3,47 @@ import { encrypt, checkPassword } from '../../utils/encrypt.js'
 import { generateJwt } from '../../utils/jwt.js'
 
 /*
+ * Función para crear un administrador predeterminado al iniciar la aplicación:
+- Se utiliza en el arranque del servidor para garantizar que exista al menos un administrador.
+ */
+export const createDefaultAdmin = async () => {
+    try {
+        // Verificar si ya existe algún administrador
+        const existingAdmin = await Admin.findOne()
+        if (existingAdmin) return // Si existe, no se hace nada
+
+        // Valores predeterminados configurables mediante variables de entorno
+        const name = process.env.DEFAULT_ADMIN_NAME || 'Default'
+        const surname = process.env.DEFAULT_ADMIN_SURNAME || 'Admin'
+        const username = process.env.DEFAULT_ADMIN_USERNAME || 'admin'
+        const email = process.env.DEFAULT_ADMIN_EMAIL || 'admin@example.com'
+        const phone = process.env.DEFAULT_ADMIN_PHONE || '0000000000'
+        const password = process.env.DEFAULT_ADMIN_PASSWORD || 'password123'
+
+        // Encriptar la contraseña predeterminada
+        const hashedPassword = await encrypt(password)
+
+        const newAdmin = new Admin(
+            {
+                name,
+                surname,
+                username,
+                email,
+                password: hashedPassword,
+                phone,
+                status: true
+            }
+        )
+
+        await newAdmin.save()
+        console.log('Default admin created successfully')
+    } catch (error) {
+        console.error('Error creating default admin:', error)
+    }
+}
+
+
+/*
  * Registro de administrador:
  - Se recibe la información en el body y se crea un nuevo administrador.
  - Se encripta la contraseña y se asigna por defecto el rol "ADMIN".
@@ -76,45 +117,5 @@ export const login = async (req, res) => {
     } catch (err) {
         console.error(err)
         return res.status(500).send({message: 'General error with login function'})
-    }
-}
-
-/*
- * Función para crear un administrador predeterminado al iniciar la aplicación:
-- Se utiliza en el arranque del servidor para garantizar que exista al menos un administrador.
- */
-export const createDefaultAdmin = async () => {
-    try {
-        // Verificar si ya existe algún administrador
-        const existingAdmin = await Admin.findOne()
-        if (existingAdmin) return // Si existe, no se hace nada
-
-        // Valores predeterminados configurables mediante variables de entorno
-        const name = process.env.DEFAULT_ADMIN_NAME || 'Default'
-        const surname = process.env.DEFAULT_ADMIN_SURNAME || 'Admin'
-        const username = process.env.DEFAULT_ADMIN_USERNAME || 'admin'
-        const email = process.env.DEFAULT_ADMIN_EMAIL || 'admin@example.com'
-        const phone = process.env.DEFAULT_ADMIN_PHONE || '0000000000'
-        const password = process.env.DEFAULT_ADMIN_PASSWORD || 'password123'
-
-        // Encriptar la contraseña predeterminada
-        const hashedPassword = await encrypt(password)
-
-        const newAdmin = new Admin(
-            {
-                name,
-                surname,
-                username,
-                email,
-                password: hashedPassword,
-                phone,
-                status: true
-            }
-        )
-
-        await newAdmin.save()
-        console.log('Default admin created successfully')
-    } catch (error) {
-        console.error('Error creating default admin:', error)
     }
 }

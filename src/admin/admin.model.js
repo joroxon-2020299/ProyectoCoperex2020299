@@ -42,13 +42,13 @@ const adminSchema = new Schema(
             default: true
         }
     }
-);
+)
 
 // Excluir `password` y `__v` al devolver la respuesta JSON
 adminSchema.methods.toJSON = function() {
-    const { __v, password, ...admin } = this.toObject();
-    return admin;
-};
+    const { __v, password, ...admin } = this.toObject()
+    return admin
+}
 
 // Exportar modelo
-export default model('Admin', adminSchema);
+export default model('Admin', adminSchema)
