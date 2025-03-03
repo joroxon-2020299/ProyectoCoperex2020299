@@ -1,5 +1,4 @@
 //Configurar el servidor de express (HTTP)
-
 //Modular | + efectiva | trabaja en funciones
 
 'use strict'

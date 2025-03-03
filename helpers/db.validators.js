@@ -12,8 +12,8 @@ export const existUsername = async(username)=>{
 }
 
 export const findUser = async (adminId) => {
-    return await User.findById(adminId);
-}
+    return await Admin.findById(adminId);
+};
 
 export const ObjectIdValid = async(objectId)=>{
     if(!isValidObjectId(objectId)){

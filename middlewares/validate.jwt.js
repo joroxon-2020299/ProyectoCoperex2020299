@@ -11,7 +11,9 @@ export const validateJwt = async (req, res, next) => {
         const { authorization } = req.headers
         
         if (!authorization) {
-            return res.status(401).send({ message: 'Unauthorized: No token provided' })
+            return res.status(401).send(
+                { message: 'Unauthorized: No token provided' }
+            )
         }
         
         // Desencriptar el token
@@ -20,10 +22,12 @@ export const validateJwt = async (req, res, next) => {
         // Verificar que el usuario aún exista en la BD
         const validateUser = await findUser(user.uid)
         if (!validateUser) {
-            return res.status(404).send({
-                success: false,
-                message: 'User not found - Unauthorized'
-            })
+            return res.status(404).send(
+                {
+                    success: false,
+                    message: 'User not found - Unauthorized'
+                }
+            )
         }
         
         // Inyectar la información del usuario en la solicitud
@@ -40,17 +44,21 @@ export const isAdmin = async (req, res, next) => {
     try {
         const { user } = req
         if (!user || user.role !== 'ADMIN') {
-            return res.status(403).send({
-                success: false,
-                message: `You don't have access | username ${user && user.username ? user.username : ''}`
-            })
+            return res.status(403).send(
+                {
+                    success: false,
+                    message: `You don't have access | username ${user && user.username ? user.username : ''}`
+                }
+            )
         }
         next()
     } catch (err) {
         console.error(err)
-        return res.status(403).send({
-            success: false,
-            message: 'Unauthorized role'
-        })
+        return res.status(403).send(
+            {
+                success: false,
+                message: 'Unauthorized role'
+            }
+        )
     }
 }
