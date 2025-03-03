@@ -1,4 +1,4 @@
-import Empresa from '../models/empresa.model.js'
+import Empresa from '../company/company.model.js'
 import ExcelJS from 'exceljs'
 
 // Registra una nueva empresa:

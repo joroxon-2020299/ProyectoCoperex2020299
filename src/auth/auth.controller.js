@@ -1,4 +1,4 @@
-import Admin from '../models/admin.model.js'
+import Admin from '../admin/admin.model.js'
 import { encrypt, checkPassword } from '../../utils/encrypt.js'
 import { generateJwt } from '../../utils/jwt.js'
 

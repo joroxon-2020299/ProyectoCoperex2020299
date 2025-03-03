@@ -1,50 +1,48 @@
 import { Router } from 'express'
-import { 
-  getAllAdmins, 
-  getAdminById, 
-  updateAdmin, 
-  updateAdminPassword, 
-  updateAdminImage, 
-  toggleAdminStatus 
-} from './admin.controller.js'
-import multerUploads from '../../middlewares/multer.uploads.js' // Asegúrate de que la ruta sea la correcta
+import { validateJwt } from '../../middlewares/validate.jwt.js'
+import {
+    getAllAdmins,
+    getAdminById,
+    updateAdmin,
+    updateAdminPassword,
+    updateAdminImage,
+    toggleAdminStatus
+} from '../admin/admin.controller.js'
 
 const api = Router()
 
-// Ruta para obtener todos los administradores
 api.get(
     '/', 
+    [validateJwt], 
     getAllAdmins
 )
 
-// Ruta para obtener un administrador por ID
 api.get(
     '/:id', 
+    [validateJwt], 
     getAdminById
 )
 
-// Ruta para actualizar datos del administrador (excepto contraseña e imagen)
 api.put(
     '/:id', 
+    [validateJwt], 
     updateAdmin
 )
 
-// Ruta para actualizar la contraseña del administrador
 api.put(
-    '/:id/password', 
+    '/password/:id', 
+    [validateJwt], 
     updateAdminPassword
 )
 
-// Ruta para actualizar la imagen de perfil del administrador
 api.put(
-    '/:id/image', 
-    multerUploads, 
+    '/image/:id', 
+    [validateJwt], 
     updateAdminImage
 )
-
-// Ruta para activar/desactivar un administrador
 api.put(
-    '/:id/status', 
+    '/status/:id', 
+    [validateJwt], 
     toggleAdminStatus
 )
 
